@@ -7,12 +7,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class TextFileLoader implements FileLoader {
+public class JsonFileLoader implements FileLoader {
 
     @Override
     public void loadFile(String filePath) throws IOException {
         File file = new File(filePath);
-        
+
         if (!file.exists() || !file.isFile()) {
             throw new IllegalArgumentException(filePath + " is not a valid file");
         }
