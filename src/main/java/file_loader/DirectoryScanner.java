@@ -1,11 +1,12 @@
 package file_loader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DirectoryScanner {
     private final String directoryPath;
-    private ArrayList<String> fileNames;
+    private final ArrayList<String> fileNames;
 
     public DirectoryScanner(String directoryPath) {
         this.directoryPath = directoryPath;
@@ -35,6 +36,10 @@ public class DirectoryScanner {
         }
     }
 
+    public void load() {
+        loadFileNames();
+        loadFiles();
+    }
 
 
     public String getFileExtension(String fileName) {
@@ -47,5 +52,20 @@ public class DirectoryScanner {
 
     public ArrayList<String> getFileNames() {
         return fileNames;
+    }
+
+    public void loadFiles() {
+        for (String fileName: this.getFileNames()) {
+            try {
+                FileLoader fileLoader = FileLoaderFactory.getFileLoader(this.getFileExtension(fileName));
+                fileLoader.loadFile(directoryPath + File.separator + fileName);
+            } catch (IOException e) {
+                System.err.println("Error reading file: " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.err.println("Invalid directory or file type: " + e.getMessage());
+            } catch (RuntimeException e) {
+                System.err.println("Error: " + e.getMessage());
+            }
+        }
     }
 }

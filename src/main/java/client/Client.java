@@ -14,20 +14,7 @@ public class Client {
         String filesDirPath = "src/main/resources/static/inputFiles";
 
         DirectoryScanner directoryScanner = new DirectoryScanner(filesDirPath);
-        directoryScanner.loadFileNames();
-
-        for (String fileName: directoryScanner.getFileNames()) {
-            try {
-                FileLoader fileLoader = FileLoaderFactory.getFileLoader(directoryScanner.getFileExtension(fileName));
-                fileLoader.loadFile(filesDirPath + File.separator + fileName);
-            } catch (IOException e) {
-                System.err.println("Error reading file: " + e.getMessage());
-            } catch (IllegalArgumentException e) {
-                System.err.println("Invalid directory or file type: " + e.getMessage());
-            } catch (RuntimeException e) {
-                System.err.println("Error: " + e.getMessage());
-            }
-        }
+        directoryScanner.load();
     }
 
 
